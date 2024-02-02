@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="R2I is a model-based agent with enhanced memory capabilities which shines in challenging memory reinforcement learning tasks.">
+  <meta name="keywords" content="Recall to Imagine, R2I, reinforcement learning, RL, model-based RL">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recall to Imagine</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/icon.png"> -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./static/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./static/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./static/images/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;"> -->
+
+      <!-- <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a> -->
+
+      <!-- <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Outline
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+<nav class="navbar is-transparent is-fixed-top glass-overlay" role="navigation" aria-label="main navigation" id="navbar" style="background: linear-gradient(to right, #f9fff9f2, #dae6dae6);">
+  <div class="navbar-brand">
+    <!-- <a class="navbar-item" href="#">
+      Home
+    </a> -->
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div class="navbar-menu" id="navMenu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="#overview">
+        Overview
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" href="#intro">
+          Introduction
+        </a>
+
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="#motivation">
+            RL Limitation
+          </a>
+          
+        </div>
+      </div>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" href="#method">
+          Method
+        </a>
+
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="#tabular">
+            Memory Improvement
+          </a>
+          <a class="navbar-item" href="#complex">
+            Complex Tasks
+          </a>
+          <a class="navbar-item" href="#generality">
+            Generality
+          </a>
+          <a class="navbar-item" href="#speed">
+            Computational Efficiency
+          </a>
+          
+        </div>
+      </div>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-item" href="#conclusion">
+          Conclusion
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop" style="padding-top: 1.75rem;">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Mastering Memory Tasks with World Models</h1>
+          <div class="is-size-5 publication-authors" style="margin: 15px auto; font-family: 'Computer Modern Serif'">
+            <span class="iclr">ICLR 2024 (oral, top-1.2%)</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://mrsamsami.github.io">Mohammad Reza Samsami</a><sup>*1,2</sup>,</span>
+            <span class="author-block">
+              <a href="https://artemzholus.github.io">Artem Zholus</a><sup>*1,3</sup>,</span>
+            <span class="author-block">
+              <a href="https://sites.google.com/umich.edu/janarthanan-rajendran">Janarthanan Rajendran</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://sarathchandar.in/">Sarath Chandar</a><sup>1,3,4</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Mila - Quebec AI Institute,</span>
+            <span class="author-block"><sup>2</sup>Université de Montréal,</span>
+            <span class="author-block"><sup>3</sup>Polytechnique Montréal,</span>
+            <span class="author-block"><sup>4</sup>CIFAR AI Chair</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block" style="color:rgb(100, 106, 114)"><sup>*</sup>Equal Contribution</span>
+          </div>
+
+          
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser" id="overview">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="teaser-wrapper">
+        <img src="static/images/teaser.jpg" alt="Recall to Imagine" title="Recall to Imagine">
+      </div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Recall to Imagine</span> is a generalist, computationally efficient, model-based agent which shines in memory-intensive reinforcement learning (RL) tasks, 
+        <b>exceeding human performance</b>. 
+        Explore our open-sourced codebase for streamlined RL pipelines and advanced state space models.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- <section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3" id="intro">Temporal Reasoning in Agents</h2>
+        <div class="content has-text-justified">
+          <p>
+            Addressing sequential decision-making problems requires the incorporation of temporal reasoning. 
+            At the core of this process lies the function of <span class="emphasis">memory</span>. 
+            Essentially, memory enables humans and machines to retain valuable information from past events, 
+            empowering both living beings and digital entities to make informed decisions at present.
+          </p>
+          <p>
+            Take for instance the <span class="highlight">Memory Length</span> task in the <a href="https://arxiv.org/abs/1908.03568">Behavior Suite</a> benchmark. 
+            Within this environment, the goal is to output an action which is dictated by the initial observation 
+            (the episode length i.e., the memory steps number is an environment parameter). 
+            Thus, the agent must carry the information from the initial observation throughout the entire episode.
+          </p>
+          <p>
+            Another vital aspect of temporal reasoning is the ability to gauge the effects and consequences of our past actions and choices on the feedback/outcome we receive now
+            - be it success or failure. This process is termed <span class="emphasis">credit assignment</span>. 
+            Delving deeper into this concept, consider the <span class="highlight">Discounting Chain</span> task within the Behavior Suite, 
+            where the first action causes a reward that is only provided after a certain number of steps, specified by the parameter reward delay.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h3 class="title is-4" id="motivation">RL Struggles with Memory and Credit Assignment</h3>
+          <div class="content has-text-justified">
+            <p>
+              RL, which is a reward-maximization paradigm to learn intelligent behaviors, 
+              has demonstrated remarkable achievements across a diverse set of applications ranging from real-world challenges to games. 
+              Nonetheless, when confronted with tasks that heavily rely on long-term memory or long-horizon credit assignment, success becomes very challenging for most RL algorithms. 
+              For example, <a href="https://arxiv.org/abs/2301.04104">DreamerV3</a> stands out as a scalable and general model-based RL algorithm that masters a wide range of applications with fixed hyperparameters. 
+              Yet, questions arise about its performance in tasks like <span class="highlight">Memory Length</span> and <span class="highlight">Discounting Chain</span>. 
+              The figures presented below illustrate <span class="emphasis">a limitation in the DreamerV3 memory capability, 
+              as it achieves rewards exclusively within the confines of episodes no longer than 30 steps</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+    <!--/ Abstract. -->
+
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h3 class="title is-4">Memory Length</h3>
+          
+        </div>
+      </div>
+      <!--/ Visual Effects. -->
+
+      <!-- Matting. -->
+      <div class="column">
+        <h3 class="title is-4">Discounting Chain</h3>
+        <div class="columns is-centered">
+          <div class="column content">
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Matting. -->
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" id="method">Recall to Imagine</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            RNNs or Transformers are commonly utilized as the backbone of agent's world models to integrate temporal reasoning into the agent; 
+            however, the challenge of long-term memory and credit assignment frequently arises. 
+            This challenge is attributed to the backbone network architecture's inadequate learning of long-range dependencies. 
+            Recent research indicates that <a href="https://arxiv.org/abs/2111.00396">state space models (SSMs)</a> have the potential to replace them. 
+            <a href="https://arxiv.org/abs/2312.00752">SSMs</a> exhibit the capability to capture dependencies in very long sequences more efficiently—with sub-quadratic complexity—and can be trained in parallel.
+          </p>
+          <p>
+            To improve temporal coherence, we introduce <span class="dnerf" style="font-size: larger;">Recall to Imagine</span>, or in short form <span class="r2i">R2I</span>, 
+            which integrates SSMs in DreamerV3's world model, 
+            giving rise to what we term the <span class="emphasis">Structured State-Space Model (S3M)</span>. 
+            The design of the S3M aims to achieve two primary objectives: 
+            <span class="emphasis">capturing long-range relations in trajectories</span> and ensuring <span class="emphasis">fast computational performance</span> in model-based RL. 
+            S3M achieves the desired speed through parallel computation during training and recurrent mode in inference time, 
+            which enables quick generation of imagined trajectories. 
+          </p>
+
+          <div style="margin-bottom: 3.5em;">
+            <img src="static/images/r2i.png" alt="R2I Overview" title="R2I Overview">
+          </div>
+        </div>
+
+        <br/>
+        <h3 class="title is-4" id="tabular">Does <span class="r2i">R2I</span> improve the memory?</h3>
+
+        <div class="content has-text-justified">
+          <p>
+            Absolutely, <span class="r2i">R2I</span> doesn't just improve memory, it shines!
+            It excels in <span class="highlight">Memory Length</span> and <span class="highlight">Discounting Chain</span> tasks, 
+            significantly outperforming in the preservation of its learning ability across a wider range of varying environment complexities.
+          </p>
+          <div class="result-container" style="margin-bottom: 1em;">
+            <img class="plot" src="static/images/bsuite.png" alt="BSuite" title="BSuite">
+          </div>
+          <br/>
+          <p>
+            But it does not end here; we also assess <span class="r2i">R2I</span> more comprehensively. 
+            To evaluate <span class="r2i">R2I</span> under more challenging conditions, 
+            we perform a study utilizing <a href="https://arxiv.org/abs/2303.01859">POPGym</a>, 
+            a benchmark that provides a collection of RL environments, 
+            designed to assess various challenges related to POMDPs, 
+            such as navigation, noise robustness, and memory.
+            We select the three most memory-intensive environments: <span class="highlight">RepeatPrevious</span>,
+            <span class="highlight">Autoencode</span>, and <span class="highlight">Concentration</span>. These environments require an optimal policy to memorize
+the highest number of events at each time step. Each environment in
+POPGym has three difficulty levels: <span class="emphasis">Easy, Medium, Hard</span>. In the memory environments of
+this study, the complexity is increased by the number of actions or observations that the agent should
+keep track of simultaneously. As illustrated in the following figure, <span class="r2i">R2I</span> demonstrates the new SOTA performance in these memory-intensive tasks.
+<b>These results in POPGym and BSuite indicate that <span class="r2i">R2I</span> significantly pushes the memory limits</b>.
+          </p>
+          <div class="result-container">
+            <img class="plot" src="static/images/popgym.png" alt="POPGym" title="POPGym">
+          </div>
+        </div>
+        
+        <br/>
+        <!--/ Interpolating. -->
+
+        <!-- Re-rendering. -->
+        <h3 class="title is-4" id="complex">Long-term memory of <span class="r2i">R2I</span> in complex 3D tasks</h3>
+        <div class="content has-text-justified">
+          <p>
+            How does <span class="r2i">R2I</span> perform in complex environments where success depends on very long-term memory as well as reasoning, exploration, and other skills?
+            Can enhanced memory mechanism of <span class="r2i">R2I</span> actually bolster overall performance in these scenarios?
+            Yes, it can. adept memory mechanism isn't just keeping up; it's setting the pace, <span class="emphasis">surpassing human abilities</span>!
+          </p>
+          <p>
+            To investigate this question, we conduct experiments in <a href="https://arxiv.org/abs/2210.13383">Memory Maze</a> domain, 
+            which presents randomized 3D mazes where the egocentric agent is repeatedly tasked to navigate to one of multiple objects. 
+            For optimal speed and efficiency, the agent must retain information about the locations of objects, the maze's wall layout, and its own position.
+            Each episode can extend for up to 4K environment steps. 
+            An ideal agent equipped with long-term memory only needs to explore each maze once, 
+            a task achievable in a shorter time than the episode's duration; 
+            subsequently, it can efficiently find the shortest path to reach each requested target. 
+            We trained and tested <span class="r2i">R2I</span> and leading baslines on 4 existing maze sizes: 
+            9x9, 11x11, 13x13, and 15x15. 
+            <span class="r2i">R2I</span> consistently <b>sets a new state-of-the-art by outperforming leading baselines in all of these environments</b>, 
+            achieving comparable or higher levels of performance. 
+            Moreover, <b>it has surpassed human-level abilities in solving 9x9, 11x11, and 13x13 mazes</b>, 
+            showcasing its strong memory capabilities in these complex tasks.
+          </p>
+          <p>
+            <div class="result-container">
+              <img class="plot" src="static/images/mmaze.png" alt="Memory Maze" title="Memory Maze">
+            </div>
+          </p>
+        </div>
+
+        <h3 class="title is-4" id="generality">Generality of <span class="r2i">R2I</span> in non-memory domains</h3>
+        <div class="content has-text-justified">
+          <p>
+            To confirm that R2I retains the generality of its predecessor, DreamerV3, 
+            we assess the performance of <span class="r2i">R2I</span> on two widely used RL benchmarks: 
+            <a href="https://arxiv.org/abs/1207.4708">Atari</a> and <a href="https://arxiv.org/abs/1801.00690">DMC</a>. 
+            While neither domain demands memory for being solved, 
+            evaluating <span class="r2i">R2I</span> on them is essential as we aim to ensure our agent's performance across a wide range of tasks that require different types of control.
+            <span class="r2i">R2I</span> maintains a performance similar to DreamerV3 in these domains, 
+            as illustrated in the figure below. 
+            This suggests that, 
+            for the majority of standard RL tasks, 
+            <span class="r2i">R2I</span> <b>does not sacrifice generality for improved memory capabilities</b>.
+          </p>
+          <p>
+            <div class="result-container">
+              <img class="plot" src="static/images/non-mem.png" alt="Atari and DMC" title="Atari and DMC">
+            </div>
+          </p>
+        </div>
+
+        <h3 class="title is-4" id="speed">Computational efficiency of <span class="r2i">R2I</span></h3>
+        <div class="content has-text-justified">
+          <p>
+            To enable the scalability and the parallelizability of world model learning, 
+            we employ parallel scan to execute SSM computations. 
+            Parallel scan enables scaling of sequence length in batch across distributed devices, 
+            a capability not supported by the convolution mode. 
+            During the world model's training phase, 
+            SSMs process sequences in parallel (unlike their RNN counterparts). 
+            When it comes to the training phase for the actor and the critic, 
+            the model transitions to a recurrent mode, 
+            removing the need to engage with the entire context as Transformers require. 
+            <b>The result is the impressive computational efficiency of <span class="r2i">R2I</span>, 
+            with a speed increase of up to 9 times compared to DreamerV3.</b>
+          </p>
+          <p>
+            <div class="result-container" style="width: 50%;">
+              <img class="plot" src="static/images/speed.png" alt="Atari and DMC" title="Atari and DMC">
+            </div>
+          </p>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+
+    <!-- Concurrent Work. -->
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3" id="conclusion">Conclusion</h2>
+        <div class="content has-text-justified">
+          <p>
+            We introduced <span class="r2i">R2I</span>, 
+            the <span class="emphasis">first model-based approach to RL that uses SSM</span>. 
+            <span class="r2i">R2I</span> is a general and fast method that demonstrates superior memory capabilities, 
+            even <span class="emphasis">transcending human performance</span> in the complex Memory Maze domain.
+          </p>
+          <p>
+            Further enhancing its contribution to the field, 
+            we have released and documented the code, 
+            ensuring that <span class="r2i">R2I</span> can be readily utilized and adapted by researchers. 
+            Its ease of use and proven effectiveness make <span class="r2i">R2I</span> an ideal candidate for benchmarking and advancing the state-of-the-art in RL research.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code></code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+
+            This website utilizes the design template from <a
+            href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> website, 
+            which is made available through the <a rel="license"
+            href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // JavaScript code for smooth scrolling with a fixed offset
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      let targetId = this.getAttribute('href');
+      let target = document.querySelector(targetId);
+
+      if (target) {
+        // Define the fixed offset in pixels
+        const fixedOffset = 64;
+        
+        // Calculate the position to scroll to considering the fixed offset
+        let offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - fixedOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

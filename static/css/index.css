@@ -1,0 +1,259 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+
+.footer .icon-link {
+    font-size: 25px;
+    color: #000;
+}
+
+.link-block a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+
+.publication-title {
+}
+
+.publication-banner {
+  max-height: parent;
+
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+img.plot {
+  transition: box-shadow 0.3s ease-in-out;
+  display: block; /* This will solve the problem of possible extra space under image */
+}
+
+img.plot:hover {
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+  /* Optional: Scale the image up slightly to indicate it's interactive*/
+  transform: scale(1.05);
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.publication-header .hero-body {
+}
+
+.iclr {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 20px; /* Adjust font size as needed */
+  font-weight: bold; /* Make the font bold */
+  color: #DAA520; /* Gold color for the trophy */
+  text-shadow: 1px 0px 1px #1616165e; /* Shadow to make it pop out */
+  padding: 5px 10px; /* Some padding around the text */
+  border: 2px solid #DAA520; /* Border to make it stand out */
+  border-radius: 10px; /* Rounded corners */
+  display: inline-flex; /* Using flex to align text and icon */
+  align-items: center; /* Center items vertically in the flex container */
+  background-color: rgba(218, 165, 32, 0.1); /* Light background */
+}
+
+.iclr::after {
+  content: '\1F3C6'; /* Unicode for the trophy emoji */
+  margin-left: 8px; /* Space between the icon and text */
+  font-size: 24px; /* Slightly larger size for the icon */
+}
+
+.r2i {
+  font-family: 'Courier New', monospace; /* Use a monospaced font for a code-like appearance */
+  background-color: #dae4d0; /* Light blue background for contrast */
+  color: #515e45; /* Dark text for readability */
+  font-weight: bold; /* Make the text bold */
+  padding: 2px 6px; /* Padding around the text */
+  border-radius: 4px; /* Rounded corners for a pill-like shape */
+  border: 1px solid #a5b298; /* Light blue border that fits the background */
+  margin: 0 2px; /* Adding some space around the span */
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+}
+
+a.navbar-item, a.navbar-link{
+  color:#515e45;
+}
+
+a.navbar-item:hover, a.navbar-link:hover{
+  color:#1c291c;
+}
+
+.navbar-link:not(.is-arrowless)::after {
+  border-color: #515e45;
+}
+
+.result-container {
+  width: 80%;
+  margin: 0 auto 2.5em; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-container img {
+  max-width: 100%; 
+  height: auto;
+}
+
+
+.highlight {
+  color: #5e709d;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.emphasis {
+  text-shadow: -1px 0px 1px rgba(121, 121, 121, 0.47);
+  color: #333;
+}
+
+.teaser-wrapper img {
+  /* Set width and height to be responsive */
+  width: 100%;
+  height: auto;
+  display: block; /* Removes any space below the image */
+}
+
+.teaser-wrapper {
+  /* Add fancy border */
+  padding: 10px; /* Adjusts the spacing around the image inside the wrapper */
+  background-color: #515e45; /* Replace with the color you want */
+  border-radius: 15px; /* Match this radius with the padding to create the visual effect of rounded borders */
+
+  /* Add shadow for more fanciness */
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+
+  /* Ensure the image wrapper does not exceed a maximum size (optional) */
+  max-width: 500px; /* Replace with the maximum width you want */
+  margin: 0 auto 40px; /* Center the image wrapper if it's smaller than the container */
+}
+
+.publication-title {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-venue {
+    color: #555;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.publication-awards {
+    color: #ff3860;
+    width: fit-content;
+    font-weight: bolder;
+}
+
+.publication-authors {
+}
+
+.publication-authors a {
+   color: hsl(91.2deg 48.47% 41.9%) !important;
+}
+
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-banner img {
+}
+
+.publication-authors {
+  /*color: #4286f4;*/
+}
+
+.publication-video {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+
+    overflow: hidden;
+    border-radius: 10px !important;
+}
+
+.publication-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.publication-body img {
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  padding: 0;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+
+.interpolation-panel {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.interpolation-panel .interpolation-image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.interpolation-video-column {
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+#interpolation-image-wrapper {
+  width: 100%;
+}
+#interpolation-image-wrapper img {
+  border-radius: 5px;
+}
