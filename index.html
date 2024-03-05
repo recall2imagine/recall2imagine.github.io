@@ -250,8 +250,8 @@
       </div>
       <h2 class="subtitle has-text-centered">
         <span class="dnerf">Recall to Imagine</span> is a generalist, computationally efficient, model-based agent which shines in memory-intensive reinforcement learning (RL) tasks, 
-        <b>exceeding human performance</b>. 
-        Explore our open-sourced codebase for streamlined RL pipelines and advanced state space models.
+        <b>particularly exhibiting superhuman performance in the most complex memory domain</b>. 
+        Explore our open-sourced codebase, fully implemented in JAX for streamlined and highly efficient RL pipelines, along with advanced state space models.
       </h2>
     </div>
   </div>
@@ -370,19 +370,18 @@
 
 <section class="section">
   <div class="container is-max-desktop">
+    <div class="result-container" style="margin-top: -4em;">
+      <img class="plot" src="static/images/memca.png" alt="Dreamer in Bsuite" title="Dreamer in Bsuite">
+    </div>
 
-    <div class="columns is-centered">
+    <!-- <div class="columns is-centered">
 
-      <!-- Visual Effects. -->
       <div class="column">
         <div class="content">
           <h3 class="title is-4">Memory Length</h3>
           
         </div>
       </div>
-      <!--/ Visual Effects. -->
-
-      <!-- Matting. -->
       <div class="column">
         <h3 class="title is-4">Discounting Chain</h3>
         <div class="columns is-centered">
@@ -391,10 +390,8 @@
 
         </div>
       </div>
-    </div>
-    <!--/ Matting. -->
+    </div> -->
 
-    <!-- Animation. -->
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3" id="method">Recall to Imagine</h2>
@@ -525,8 +522,8 @@ keep track of simultaneously. As illustrated in the following figure, <span clas
             with a speed increase of up to 9 times compared to DreamerV3.</b>
           </p>
           <p>
-            <div class="result-container" style="width: 50%;">
-              <img class="plot" src="static/images/speed.png" alt="Atari and DMC" title="Atari and DMC">
+            <div class="result-container">
+              <img class="plot" src="static/images/timing.png" alt="Atari and DMC" title="Atari and DMC">
             </div>
           </p>
         </div>
@@ -564,7 +561,14 @@ keep track of simultaneously. As illustrated in the following figure, <span clas
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code></code></pre>
+    <pre><code>@inproceedings{
+      samsami2024mastering,
+      title={Mastering Memory Tasks with World Models},
+      author={Mohammad Reza Samsami and Artem Zholus and Janarthanan Rajendran and Sarath Chandar},
+      booktitle={The Twelfth International Conference on Learning Representations},
+      year={2024},
+      url={https://openreview.net/forum?id=1vDArHJ68h}
+      }</code></pre>
   </div>
 </section>
 
