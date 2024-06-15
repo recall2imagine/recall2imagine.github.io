@@ -1,3 +1,3 @@
-# r2i.github.io
+# recall2imagine.github.io
 
-The code will be open-sourced at https://github.com/chandar-lab . Please stay tuned for the updates. 
+The code is open-sourced at [https://github.com/chandar-lab/recall2Imagine](https://github.com/chandar-lab/recall2Imagine/).
